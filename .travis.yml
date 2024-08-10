@@ -1,0 +1,23 @@
+sudo: required
+language: generic
+services:
+  - docker
+
+before_install:
+  - docker build -t mitsost/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true mitsost/react-test npm test
+
+after_success:  
+  - docker build -t mitsost/multi-client ./client
+  - docker build -t mitsost/multi-nginx ./nginx
+  - docker build -t mitsost/multi-server ./server
+  - docker build -t mitsost/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push mitsost/multi-client
+  - docker push mitsost/multi-nginx
+  - docker push mitsost/multi-server
+  - docker push mitsost/multi-worker
