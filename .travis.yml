@@ -16,7 +16,7 @@ after_success:
   - docker build -t mitsost/multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  # Take those images and push them to docker hub
+  # Take those images and push them to docker hubs
   - docker push mitsost/multi-client
   - docker push mitsost/multi-nginx
   - docker push mitsost/multi-server
