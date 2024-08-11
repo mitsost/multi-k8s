@@ -1,5 +1,6 @@
 sudo: required
 language: generic
+regiom 
 services:
   - docker
 
@@ -21,3 +22,15 @@ after_success:
   - docker push mitsost/multi-nginx
   - docker push mitsost/multi-server
   - docker push mitsost/multi-worker
+
+  deploy:
+    provider: elasticbeanstalk
+    region: "us-east-1"
+    app: "multi-docker"
+    env: "MultiDocker-env"
+    bucket_name: "elasticbeanstalk-us-east-1-040053763409"
+    bucket_path: "docker-multi"
+    on:
+      branch: main
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY

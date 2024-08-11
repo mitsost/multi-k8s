@@ -1,0 +1,58 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "mitsost/multi-client",
+            "hostname": "client", 
+            "essential": false,
+            "memory": 128,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ]
+        },
+        {
+            "name": "server",
+            "image": "mitsost/multi-server",
+            "hostname": "api", 
+            "essential": false,
+            "memory": 128,
+            "portMappings": [
+                {
+                    "hostPort": 5000,
+                    "containerPort": 5000
+                }
+            ]
+        },
+        {
+            "name": "worker",
+            "image": "mitsost/multi-worker",
+            "hostname": "worker", 
+            "essential": false,
+            "memory": 128,
+            "portMappings": [
+                {
+                    "hostPort": 5000,
+                    "containerPort": 5000
+                }
+            ]
+        },
+        {
+            "name": "nginx",
+            "image": "mitsost/multi-nginx",
+            "hostname": "nginx", 
+            "essential": true,
+            "memory": 128,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": ["client", "server"]
+        }
+    ]
+}
