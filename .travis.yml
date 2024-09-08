@@ -2,6 +2,7 @@ sudo: required
 dist: focal
 services:
   - docker
+
 env:
   global:
     - SHA=$(git rev-parse HEAD)
