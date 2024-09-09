@@ -9,11 +9,43 @@ metadata:
     # ADD ANNOTATION
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     # ADD ANNOTATION
+    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+    # ADD ANNOTATION
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
 spec:
   ingressClassName: nginx
   # ADD INGRESSCLASSNAME FIELD
+  tls:
+    - hosts:
+        - mitsos.co
+        - www.mitsos.co
+      secretName: mitsos-co
   rules:
-    - http:
+    - host: mitsos.co
+      http:
+        paths:
+          - path: /?(.*)
+            # UPDATE PATH
+            pathType: ImplementationSpecific
+            # ADD PATHTYPE
+            backend:
+              service:
+                # UPDATE SERVICE FIELDS
+                name: client-cluster-ip-service
+                port:
+                  number: 3000
+          - path: /api/?(.*)
+            # UPDATE PATH
+            pathType: ImplementationSpecific
+            # ADD PATHTYPE
+            backend:
+              service:
+                # UPDATE SERVICE FIELDS
+                name: server-cluster-ip-service
+                port:
+                  number: 5000
+    - host: www.mitsos.co
+      http:
         paths:
           - path: /?(.*)
             # UPDATE PATH
