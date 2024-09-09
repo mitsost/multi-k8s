@@ -1,0 +1,21 @@
+apiVersion: cert-manager.io/v1
+ 
+kind: Certificate
+metadata:
+  name: mitsos-co-tls
+spec:
+  secretName: mitsos-co
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: mitsos.co
+  dnsNames:
+    - mitsos.co
+    - www.mitsos.co
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - mitsos.co
+          - www.mitsos.co
